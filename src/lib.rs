@@ -75,6 +75,20 @@ pub fn solver(arr:&Vec<Vec<u8>>)->Option<Vec<Vec<u8>>>{
 }
 
 
+pub fn slove_sudoku(arr:Vec<u8>)->Vec<u8>{
+    let mut arglist = Vec::new();
+    for i in 0..10{
+        let row:Vec<u8>=arr[i..i+10].to_vec();
+        arglist.push(row);
+    }
+    let rlist=solver(&arglist).unwrap();
+    let mut rarr = Vec::new();
+    for i in rlist{
+        rarr.push(i)
+    }
+    return rarr.concat()
+}
+
 
 #[cfg(test)]
 mod tests {
