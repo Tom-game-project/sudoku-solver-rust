@@ -1,3 +1,5 @@
+extern crate wasm_bindgen;
+use wasm_bindgen::prelude::*;
 
 pub fn possibility(x:i8,y:i8,arr:&Vec<Vec<u8>>)->Vec<u8>{
     let cx = (x/3)*3;
@@ -74,11 +76,11 @@ pub fn solver(arr:&Vec<Vec<u8>>)->Option<Vec<Vec<u8>>>{
     }
 }
 
-
-pub fn slove_sudoku(arr:Vec<u8>)->Vec<u8>{
+#[wasm_bindgen]
+pub fn sudoku(arr:Vec<u8>)->Vec<u8>{
     let mut arglist = Vec::new();
-    for i in 0..10{
-        let row:Vec<u8>=arr[i..i+10].to_vec();
+    for i in 0..9{
+        let row:Vec<u8>=arr[i*9..i*9+9].to_vec();
         arglist.push(row);
     }
     let rlist=solver(&arglist).unwrap();
@@ -89,26 +91,25 @@ pub fn slove_sudoku(arr:Vec<u8>)->Vec<u8>{
     return rarr.concat()
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn it_works() {
-        let mut arr: Vec<Vec<u8>> = Vec::new();
+        let arr=vec![
+            0,7,0,0,0,1,0,0,4,
+            0,6,0,0,0,0,0,2,0,
+            2,0,1,0,5,0,0,0,3,
+            0,2,0,0,0,0,0,0,0,
+            8,0,4,0,0,6,0,3,0,
+            0,0,0,9,0,0,0,0,5,
+            0,0,0,0,6,0,4,0,0,
+            1,0,3,0,0,4,0,8,0,
+            0,0,7,0,0,0,0,0,0
+        ];
 
-        arr.push(vec![0,7,0,0,0,1,0,0,4]);
-        arr.push(vec![0,6,0,0,0,0,0,2,0]);
-        arr.push(vec![2,0,1,0,5,0,0,0,3]);
-        arr.push(vec![0,2,0,0,0,0,0,0,0]);
-        arr.push(vec![8,0,4,0,0,6,0,3,0]);
-        arr.push(vec![0,0,0,9,0,0,0,0,5]);
-        arr.push(vec![0,0,0,0,6,0,4,0,0]);
-        arr.push(vec![1,0,3,0,0,4,0,8,0]);
-        arr.push(vec![0,0,7,0,0,0,0,0,0]);
-
-        let result = solver(&arr);
+        let result = sudoku(arr);
 
         println!("{:?}",result)
     }
